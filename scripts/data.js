@@ -30,7 +30,7 @@ var workExp = [{
   }, {
     task: 'Perform data management activities and evaluate datasets for data integrity.'
   }, {
-    task: 'Handles and relegates tasks to BSIT and BSCS interns from different schools.'
+    task: 'Supervises and relegates CS/IT interns with data extraction tasks and updating of web application tools.'
   }]
 }, {
   company: "Telus International",

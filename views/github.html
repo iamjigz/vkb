@@ -31,7 +31,7 @@
             <span class="md-title">Followers: {{user.followers}} - Following: {{user.following}} - Repos: {{user.public_repos}}</span>
             <span class="md-title">Showing last {{limit}} commits...</span>
             <md-slider-container flex>
-              <md-slider class="md-primary" ng-model="limit" md-discrete step="1" max="{{maxLimit}}" aria-label="limit"></md-slider>
+              <md-slider class="md-primary" ng-model="limit" md-discrete step="1" min="0" max="{{maxLimit}}" aria-label="limit"></md-slider>
                 <md-input-container>
                   <input flex type="number" ng-model="limit" aria-label="limit">
                 </md-input-container>

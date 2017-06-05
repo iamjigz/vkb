@@ -1,9 +1,19 @@
-angular.module("portfolioPage", ["ngMaterial", "ngResource", "ngAnimate", "ui.router"])
+angular.module('portfolioPage', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
   .controller('appCtrl', function($scope, $mdDialog) {
     $scope.info = profile.info;
     $scope.social = profile.social;
 
     $scope.showModal = function(ev) {
+      function DialogController($scope, $mdDialog) {
+        $scope.hide = function() {
+          $mdDialog.hide();
+        };
+
+        $scope.cancel = function() {
+          $mdDialog.cancel();
+        };
+      }
+
       $mdDialog.show({
         controller: DialogController,
         templateUrl: 'partials/modal.html',
@@ -15,16 +25,6 @@ angular.module("portfolioPage", ["ngMaterial", "ngResource", "ngAnimate", "ui.ro
         fullscreen: $scope.customFullscreen
       })
     };
-
-    function DialogController($scope, $mdDialog) {
-      $scope.hide = function() {
-        $mdDialog.hide();
-      };
-
-      $scope.cancel = function() {
-        $mdDialog.cancel();
-      };
-    }
   })
 
   .controller('themeCtrl', function($scope) {
@@ -88,8 +88,8 @@ angular.module("portfolioPage", ["ngMaterial", "ngResource", "ngAnimate", "ui.ro
     $scope.saved = localStorage.getItem('taskItems');
     $scope.taskItem = (localStorage.getItem('taskItems') !== null) ?
       JSON.parse($scope.saved) : [{
-        description: "Why not add a task?",
-        category: "Personal",
+        description: 'Why not add a task?',
+        category: 'Personal',
         date: $scope.today,
         complete: false
       }];
@@ -119,7 +119,7 @@ angular.module("portfolioPage", ["ngMaterial", "ngResource", "ngAnimate", "ui.ro
       if ($scope.newTaskDate == null || $scope.newTaskDate == '') {
         $scope.taskItem.push({
           description: $scope.newTask,
-          date: "No deadline",
+          date: 'No deadline',
           complete: false,
           category: $scope.newTaskCategory.name
         })
@@ -159,34 +159,33 @@ angular.module("portfolioPage", ["ngMaterial", "ngResource", "ngAnimate", "ui.ro
     $scope.getGitInfo = function() {
       $scope.loaded = false;
 
-      getGit.getData("https://api.github.com/users/iamjigz").then(function(res) {
-        if (res.data.name == "") res.data.name = res.data.login;
+      getGit.getData('https://api.github.com/users/iamjigz').then(function(res) {
+        if (res.data.name == '') res.data.name = res.data.login;
 
         $scope.user = res.data;
         $scope.loaded = true;
       }).catch(function(res) {
-        console.log("catch", res);
+        console.log('catch', res);
       });
 
-      getGit.getData("https://api.github.com/repos/iamjigz/jigz/commits").then(function(res) {
+      getGit.getData('https://api.github.com/repos/iamjigz/jigz/commits').then(function(res) {
         $scope.commits = res.data;
         $scope.commitsFound = res.data.length > 0;
         $scope.limit = 5;
         $scope.maxLimit = res.data.length;
       }).catch(function(res) {
-        console.log("catch", res);
+        console.log('catch', res);
       });
 
-      getGit.getData("https://api.github.com/repos/iamjigz/jigz/readme", true).then(function(res) {
+      getGit.getData('https://api.github.com/repos/iamjigz/jigz/readme', true).then(function(res) {
         $scope.readme = $sce.trustAsHtml(res.data);
-        getGit.getData("https://api.github.com/repos/iamjigz/jigz/readme").then(function(res) {
+        getGit.getData('https://api.github.com/repos/iamjigz/jigz/readme').then(function(res) {
           $scope.readmeInfo = res.data;
-          console.log(res.data);
         }).catch(function(res) {
-          console.log("catch", res);
+          console.log('catch', res);
         });
       }).catch(function(res) {
-        console.log("catch", res);
+        console.log('catch', res);
       });
     }
   })
@@ -197,7 +196,7 @@ angular.module("portfolioPage", ["ngMaterial", "ngResource", "ngAnimate", "ui.ro
         if (bool === true) {
           return $http.get(link, {
             headers: {
-              "Accept": "application/vnd.github.v3.raw"
+              'Accept': 'application/vnd.github.v3.raw'
             }
           });
         } else {
