@@ -31,18 +31,11 @@ http-server C:\location\to\app
 * [Font Awesome](https://developer.github.com/v3/) - Icon set used.
 * [Google Material Icons](https://material.io/icons/) - Icon set used.
 
-
 ## Author
 
 * **Jigno Alfred V. Venezuela** - [@iamjigz](https://github.com/iamjigz)
 * Homepage: iamjigz.github.io/jigz/
 * e-mail: jigzimon@gmail.com
-
-See also the list of [contributors](https://github.com/iamjigz/jigz/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Acknowledgments
 
