@@ -1,7 +1,7 @@
 angular.module('portfolioPage', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
   .controller('appCtrl', function($scope, $mdDialog) {
-    $scope.info = profile.info;
-    $scope.social = profile.social;
+    $scope.shows = data.shows;
+
 
     $scope.showModal = function(ev) {
       function DialogController($scope, $mdDialog) {
