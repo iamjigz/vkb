@@ -1,56 +1,37 @@
 <md-dialog aria-label="modal">
-  <form ng-cloak>
-    <md-toolbar>
-      <div class="md-toolbar-tools">
-        <h2>Update Profile Information</h2>
-        <span flex></span>
-        <md-button class="md-icon-button" ng-click="cancel()">
-          <i class="material-icons">close</i>
-        </md-button>
-      </div>
-    </md-toolbar>
+  <md-card ng-model="showData" ng-click="getCast(showData.show._links.self.href)">
+    <md-card-header md-colors="::{backgroundColor: 'primary-700'}">
+      <md-card-header-text>
+        <span class="md-title">{{showData}}</span>
+        <span class="md-subhead">{{showData.show.summary}}</span>
+      </md-card-header-text>
+    </md-card-header>
 
-    <md-dialog-content>
-      <div class="md-dialog-content md-subhead">
-        <md-input-container class="md-primary">
-          <input type="text" ng-model="info.first_name" placeholder="First Name">
-        </md-input-container>
+    <md-card-title>
+      <md-card-title-media>
+        <img ng-src="{{showData.show.image.medium}}" class="card-media">
+      </md-card-title-media>
+    </md-card-title>
+  </md-card>
 
-        <md-input-container class="md-primary">
-          <input type="text" ng-model="info.middle_name" placeholder="Middle Name">
-        </md-input-container>
+  <div class='md-padding' layout="row" layout-align="center center" layout-wrap>
+    <md-card ng-repeat="cast in casts">
+      <md-card-header md-colors="::{backgroundColor: 'primary-700'}">
+        <md-card-avatar>
+          <img class="md-user-avatar" src="{{cast.person.image.medium}}" />
+        </md-card-avatar>
 
-        <md-input-container class="md-primary">
-          <input type="text" ng-model="info.last_name" placeholder="Last Name">
-        </md-input-container>
+        <md-card-header-text>
+          <span class="md-title">{{cast.person.name}}</span>
+          <span class="md-subhead">{{cast.character.name}}</span>
+        </md-card-header-text>
+      </md-card-header>
 
-        <md-divider></md-divider>
-
-        <md-input-container class="md-accent">
-          <input type="text" ng-model="info.age" placeholder="Age">
-        </md-input-container>
-
-        <md-input-container class="md-accent">
-          <input type="text" ng-model="info.location" placeholder="Location">
-        </md-input-container>
-
-        <md-input-container class="md-accent">
-          <input type="text" ng-model="info.mobile" placeholder="Mobile">
-        </md-input-container>
-
-        <md-input-container class="md-accent">
-          <input type="email" ng-model="info.email" placeholder="Email">
-        </md-input-container>
-      </div>
-    </md-dialog-content>
-
-    <!-- <md-dialog-actions layout="row" layout-align="end center">
-      <md-button ng-click="answer('not useful')">
-       Submit
-      </md-button>
-      <md-button ng-click="answer('useful')">
-        Useful
-      </md-button>
-    </md-dialog-actions> -->
-  </form>
+      <md-card-title>
+        <md-card-title-media>
+          <img ng-src="{{cast.character.image.medium}}" class="card-media">
+        </md-card-title-media>
+      </md-card-title>
+    </md-card>
+  </div>
 </md-dialog>

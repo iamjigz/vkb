@@ -1,0 +1,55 @@
+<md-content ng-controller="searchCtrl">
+  <div flex layout="column" class="md-padding">
+    <md-input-container flex class="md-icon-float md-title md-accent">
+      <md-icon class="material-icons">search</md-icon>
+      <input id="search" placeholder="Enter search term..." ng-model="query">
+    </md-input-container>
+
+    <md-content class="md-padding" layout-xs="column" layout="row">
+      <div layout="row">
+        <md-card ng-repeat="show in shows" ng-click="getCast(show.show._links.self.href)">
+          <md-card-header md-colors="::{backgroundColor: 'primary-700'}">
+            <md-card-header-text>
+              <span class="md-title">{{show.show.name}}</span>
+            </md-card-header-text>
+          </md-card-header>
+
+          <md-card-title>
+            <md-card-title-media>
+              <img ng-src="{{show.show.image.medium}}" class="card-media">
+            </md-card-title-media>
+          </md-card-title>
+        </md-card>
+      </div>
+    </md-content>
+  </div>
+
+  <md-content flex layout="column" class='md-padding' ng-show="loaded">
+    <md-input-container flex class="md-icon-float md-title md-accent">
+      <md-icon class="material-icons">search</md-icon>
+      <input id="castSearch" placeholder="Search Character..." ng-model="castSearch">
+    </md-input-container>
+
+    <div class='md-padding' layout="row" layout-align="center center" layout-wrap>
+      <md-card ng-repeat="cast in casts | filter: castSearch | orderBy: cast.person.name">
+        <md-card-header md-colors="::{backgroundColor: 'primary-700'}">
+          <md-card-avatar>
+            <img class="md-user-avatar" ng-src="{{cast.person.image.medium}}" />
+          </md-card-avatar>
+
+          <md-card-header-text>
+            <span class="md-title">{{cast.person.name}}</span>
+            <span class="md-subhead">{{cast.character.name}}</span>
+          </md-card-header-text>
+        </md-card-header>
+
+        <md-card-title>
+          <md-card-title-media>
+            <img ng-src="{{cast.character.image.medium || cast.person.image.medium}}" class="card-media">
+          </md-card-title-media>
+        </md-card-title>
+      </md-card>
+    </div>
+
+  </md-content>
+</md-content>

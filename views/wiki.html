@@ -22,7 +22,7 @@
           </div>
         </div>
 
-        <md-card ng-repeat='data in wikiData'>
+        <md-card ng-repeat='data in wikiData' ng-click="expandSearch(data.name)">
           <md-card-header>
             <md-card-header-text md-colors="::{color: 'primary'}">
               <h4 class="md-title">{{data.name}}</h4>
@@ -32,6 +32,7 @@
           <md-card-content>
             <p>{{data.snip}}</p>
             <a href="{{data.link}}" target="blank" md-colors="::{color: 'accent'}">Read More...<md-icon class="material-icons md-primary">open_in_new</md-icon></a>
+            <!-- <p ng-model="searchData">{{searchData}}</p> -->
           </md-card-content>
         </md-card>
       </md-card-content>
