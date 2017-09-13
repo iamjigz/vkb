@@ -1,8 +1,9 @@
 angular.module('portfolioPage', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
   .controller('appCtrl', function($scope, $mdDialog) {
+    $scope.debugMode = false;
+
     $scope.showModal = function(ev, showInfo) {
       $scope.showData = showInfo;
-      console.log($scope.showData);
 
       function DialogController($scope, $mdDialog) {
         $scope.hide = function() {
@@ -41,11 +42,23 @@ angular.module('portfolioPage', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.ro
 
   .controller('searchCtrl', function($scope, $http, tvMaze, $sce) {
     $scope.$watch('query', function(newValue, oldValue) {
-      $scope.loaded = false;
-      if (newValue !== undefined) {
+      $scope.topShows = topShowsList;
+      $scope.showLoaded = false;
+      $scope.castLoaded = false;
+      $scope.fabOpen = false;
+
+      $scope.fab = {
+        fabOpen: false,
+        count: 0,
+      }
+
+      if (newValue !== undefined || newValue == '') {
+        $scope.castLoaded = false;
+
         tvMaze.getData('http://api.tvmaze.com/search/shows?q=' + newValue)
         .then(function(res) {
           $scope.shows = res.data;
+          $scope.showLoaded = true;
 
         }).catch(function(res) {
           console.log('catch', res);
@@ -53,13 +66,14 @@ angular.module('portfolioPage', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.ro
       }
     })
 
-    $scope.getCast = function(link) {
-      $scope.loaded = false;
+    $scope.getCast = function(showName, showlink) {
+      $scope.castLoaded = false;
 
-      tvMaze.getData(link + '/cast')
+      tvMaze.getData(showlink + '/cast')
       .then(function(res) {
+        $scope.title = showName;
         $scope.casts = res.data;
-        $scope.loaded = true;
+        $scope.castLoaded = true;
 
       }).catch(function(res) {
         console.log('catch', res);
@@ -71,7 +85,7 @@ angular.module('portfolioPage', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.ro
   .service('tvMaze', function($http) {
     return {
       getData: function(link) {
-          return $http.get(link, {
+          return $http.get(link.replace('http', 'https'), {
             headers: {
               'Accept': 'application/json'
             }
