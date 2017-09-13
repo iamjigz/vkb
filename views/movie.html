@@ -1,0 +1,49 @@
+<md-content ng-controller="movieCtrl">
+  <div flex layout="column" class="md-padding">
+    <md-input-container flex class="md-padding md-icon-float md-title md-accent">
+      <md-icon class="material-icons">search</md-icon>
+      <input placeholder="Enter actor's name..." ng-model="query">
+    </md-input-container>
+  </div>
+
+  <md-content flex layout="column" ng-show="movieLoaded">
+    <md-card class="md-padding">
+      <md-card-header md-colors="::{backgroundColor: 'primary-700'}">
+        <md-card-header-text>
+          <span class="md-title">Showing movies for {{query}}.</span>
+        </md-card-header-text>
+      </md-card-header>
+
+      <md-input-container flex class="md-icon-float md-title md-accent">
+        <md-icon class="material-icons">search</md-icon>
+        <input placeholder="Filter movies..." ng-model="movieSearch">
+      </md-input-container>
+
+        <div layout="column">
+          <md-card flex layout="column" ng-repeat="movie in movies | filter: movieSearch | orderBy: movie.show_title">
+            <md-card-header md-colors="::{backgroundColor: 'accent-700'}">
+              <md-card-header-text>
+                <span class="md-headline">{{movie.show_title}}</span>
+                <span class="md-subhead">{{movie.category}}</span>
+                <span class="md-subhead">{{movie.release_year}}</span>
+              </md-card-header-text>
+            </md-card-header>
+
+            <md-card-content layout="row" layout-align="space-between">
+              <div class="md-padding" layout="column">
+                <span class="md-title">Summary:</span><br />
+                <span class="md-subhead">{{movie.summary}}</span><br />
+
+                <md-divider md-inset></md-divider><br />
+
+                <span class="md-title">Cast:</span><br />
+                <span class="md-subhead">{{movie.show_cast}}</span>
+              </div>
+
+              <img ng-src="{{movie.poster}}" class="md-media-xl card-media" layout-align="center center">
+            </md-card-content>
+          </md-card>
+        </div>
+    </md-card>
+  </md-content>
+</md-content>

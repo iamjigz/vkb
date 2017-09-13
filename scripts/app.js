@@ -1,6 +1,7 @@
 angular.module('portfolioPage', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
   .controller('appCtrl', function($scope, $mdDialog) {
     $scope.debugMode = false;
+    $scope.transcriptionSheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTx1KoZbuX4SU4iqRv86L7wd56Ns7eBSTUyMFsXm-aicw45ds-sMbtCAJ4kYt5DgecigMpeVFB_haVh";
 
     $scope.showModal = function(ev, showInfo) {
       $scope.showData = showInfo;
@@ -40,25 +41,53 @@ angular.module('portfolioPage', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.ro
     };
   })
 
-  .controller('searchCtrl', function($scope, $http, tvMaze, $sce) {
+  .controller('tvShowCtrl', function($scope, $http, tvMaze, $sce) {
     $scope.$watch('query', function(newValue, oldValue) {
       $scope.topShows = topShowsList;
       $scope.showLoaded = false;
       $scope.castLoaded = false;
-      $scope.fabOpen = false;
 
-      $scope.fab = {
-        fabOpen: false,
-        count: 0,
-      }
-
-      if (newValue !== undefined || newValue == '') {
+      if (newValue !== undefined) {
         $scope.castLoaded = false;
 
         tvMaze.getData('http://api.tvmaze.com/search/shows?q=' + newValue)
         .then(function(res) {
           $scope.shows = res.data;
           $scope.showLoaded = true;
+
+        }).catch(function(res) {
+          console.log('catch', res);
+        });
+      } else {
+        $scope.showLoaded = false;
+      }
+    })
+
+    $scope.getCast = function(showName, showlink) {
+      $scope.castLoaded = false;
+
+      tvMaze.getData(showlink + '/cast')
+      .then(function(res) {
+        $scope.title = showName;
+        $scope.casts = res.data;
+        $scope.castLoaded = true;
+
+      }).catch(function(res) {
+        console.log('catch', res);
+      });
+    }
+
+  })
+
+  .controller('movieCtrl', function($scope, $http, nextflixRoulette, $sce) {
+    $scope.movieLoaded = false;
+    $scope.$watch('query', function(newValue, oldValue) {
+        if (newValue !== undefined) {
+
+        nextflixRoulette.getData('https://netflixroulette.net/api/api.php?actor=' + newValue)
+        .then(function(res) {
+          $scope.movies = res.data;
+          $scope.movieLoaded = true;
 
         }).catch(function(res) {
           console.log('catch', res);
@@ -85,7 +114,19 @@ angular.module('portfolioPage', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.ro
   .service('tvMaze', function($http) {
     return {
       getData: function(link) {
-          return $http.get(link.replace('http', 'https'), {
+          return $http.get(link, {
+            headers: {
+              'Accept': 'application/json'
+            }
+          });
+        }
+    };
+  })
+
+  .service('nextflixRoulette', function($http) {
+    return {
+      getData: function(link) {
+          return $http.get(link, {
             headers: {
               'Accept': 'application/json'
             }
@@ -109,6 +150,12 @@ angular.module('portfolioPage', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.ro
       }
     };
   })
+
+  .filter('trustUrl', ['$sce', function ($sce) {
+    return function(url) {
+      return $sce.trustAsResourceUrl(url);
+    };
+  }])
 
   .config(function($mdThemingProvider) {
     $mdThemingProvider.theme('default')

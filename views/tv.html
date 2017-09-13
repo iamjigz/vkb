@@ -1,16 +1,16 @@
-<md-content ng-controller="searchCtrl" ng-cloak>
+<md-content ng-controller="tvShowCtrl" ng-cloak>
   <div flex layout="column" class="md-padding">
-    <md-input-container flex class="md-icon-float md-title md-accent">
-      <md-icon class="material-icons">search</md-icon>
-      <input id="search" placeholder="Enter search term..." ng-model="query">
-    </md-input-container>
-
     <md-content class="md-padding" layout-xs="column" layout="row" layout-align="center center">
       <md-card ng-repeat="topShow in topShows" ng-click="getCast(topShow.name, topShow.link)">
         <md-tooltip>{{topShow.name}}</md-tooltip>
         <img class="md-card-image" ng-src="{{topShow.image}}" />
       </md-card>
     </md-content>
+
+    <md-input-container flex class="md-padding md-icon-float md-title md-accent">
+      <md-icon class="material-icons">search</md-icon>
+      <input id="search" placeholder="Enter search term..." ng-model="query">
+    </md-input-container>
 
     <md-content class="md-padding" layout-xs="column" layout="column" ng-show="showLoaded">
       <div layout="row" layout-xs="row">

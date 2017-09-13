@@ -12,122 +12,29 @@ html {
 
 body {
     line-height: 1.4;
-    max-width: 900px;
+    max-width: 1240px;
     margin: 20px auto;
 }
 
-/* ----- SKILLS PROGRESS -------- */
-.progress {
-    position: relative;
-    display: inline-block;
+.wrap {
+    width: 320px;
+    height: 192px;
     padding: 0;
-    text-align: center;
+    overflow: hidden;
 }
+.frame {
+    width: 1280px;
+    height: 786px;
+    border: 0;
+    -ms-transform: scale(0.9);
+    -moz-transform: scale(0.9);
+    -o-transform: scale(0.9);
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
 
-.progress>li {
-    display: inline-block;
-    position: relative;
-    text-align: center;
-    color: #93A2AC;
-    font-family: Lato;
-    font-weight: 100;
-    margin: 1rem;
-}
-
-.progress>li:before {
-    content: attr(data-name);
-    position: absolute;
-    width: 100%;
-    bottom: -2rem;
-    font-weight: 400;
-}
-
-.progress>li:after {
-    content: attr(data-percent);
-    position: absolute;
-    width: 100%;
-    top: 2rem;
-    left: 0;
-    font-size: 1rem;
-    text-align: center;
-}
-
-.progress svg {
-    width: 5rem;
-    height: 5rem;
-}
-
-.progress svg:nth-child(2) {
-    position: absolute;
-    left: 0;
-    top: 0;
-    transform: rotate(-90deg);
-}
-
-.progress svg:nth-child(2) path {
-    fill: none;
-    stroke-width: 25;
-    stroke-dasharray: 629;
-    stroke: #fff;
-    opacity: .9;
-    animation: load 10s;
-}
-
-/* ----- SKILL LIST -------- */
-#skill-search {
-    font-size: 20px;
-    height: 50px;
-    width: 500px;
-    text-align: center;
-    background-color: rgba(255, 255, 255, 0.65) !important;
-}
-
-
-.animate.ng-move,
-.animate.ng-enter,
-.animate.ng-leave {
-    -webkit-transition:all linear 0.5s;
-    transition:all linear 0.5s;
-}
-
-.animate.ng-leave.ng-leave-active,
-.animate.ng-move,
-.animate.ng-enter {
-    opacity:0;
-    max-height:0;
-}
-
-.animate.ng-leave,
-.animate.ng-move.ng-move-active,
-.animate.ng-enter.ng-enter-active {
-    opacity:1;
-    max-height:40px;
-}
-
-/**
- * Stagger Leave (hide) animation
- */
-.animate.ng-leave-stagger {
-    /* this will have a 100ms delay between each successive leave animation */
-    -webkit-transition-delay: 0.2s;
-    transition-delay: 0.2s;
-
-    /* in case the stagger doesn't work then these two values
-     must be set to 0 to avoid an accidental CSS inheritance */
-    -webkit-transition-duration: 0s;
-    transition-duration: 0s;
-}
-
-/**
- * Stagger ENTER ANIMATION
- */
-.animate.ng-enter-stagger {
-    /* this will have a 100ms delay between each successive enter animation */
-    -webkit-transition-delay: 0.2s;
-    transition-delay: 0.2s;
-
-    /* in case the stagger doesn't work then these two values
-     must be set to 0 to avoid an accidental CSS inheritance */
-    -webkit-transition-duration: 0s;
-    transition-duration: 0s;
+    -ms-transform-origin: 0 0;
+    -moz-transform-origin: 0 0;
+    -o-transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
 }
