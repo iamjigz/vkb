@@ -24,8 +24,8 @@ http-server C:\location\to\app
 * [GitHub Pages](http://pages.github.com/) - The free hosting from GitHub.
 * [AngularJS](https://angularjs.org/) - Web framework used.
 * [AngularJS Material](https://material.angularjs.org/) - UI Component framework used.
-* [TVmaze API](https://www.tvmaze.com/api) - API used to access TV show data over http.
-* [GitHub API](https://developer.github.com/v3/) - API used to access GitHub data over http.
+* [TVmaze API](https://www.tvmaze.com/api) - API used to access TV show metadata over http.
+* [Netflix Roulette API](https://developer.github.com/v3/) - API used to access movie metadata over http.
 * [Font Awesome](https://developer.github.com/v3/) - Icon set used.
 * [Google Material Icons](https://material.io/icons/) - Icon set used.
 

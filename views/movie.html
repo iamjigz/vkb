@@ -8,7 +8,7 @@
 
   <md-content flex layout="column" ng-show="movieLoaded">
     <md-card class="md-padding">
-      <md-card-header md-colors="::{backgroundColor: 'primary-700'}">
+      <md-card-header md-colors="::{backgroundColor: 'accent-700'}">
         <md-card-header-text>
           <span class="md-title">Showing movies for {{query}}.</span>
         </md-card-header-text>
@@ -21,7 +21,7 @@
 
         <div layout="column">
           <md-card flex layout="column" ng-repeat="movie in movies | filter: movieSearch | orderBy: movie.show_title">
-            <md-card-header md-colors="::{backgroundColor: 'accent-700'}">
+            <md-card-header md-colors="::{backgroundColor: 'primary-700'}">
               <md-card-header-text>
                 <span class="md-headline">{{movie.show_title}}</span>
                 <span class="md-subhead">{{movie.category}}</span>
