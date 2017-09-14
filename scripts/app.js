@@ -41,7 +41,7 @@ angular.module('portfolioPage', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.ro
     };
   })
 
-  .controller('tvShowCtrl', function($scope, $http, tvMaze, $sce) {
+  .controller('tvShowCtrl', function($scope, $http, httpGet, $sce) {
     $scope.$watch('query', function(newValue, oldValue) {
       $scope.topShows = topShowsList;
       $scope.showLoaded = false;
@@ -50,7 +50,7 @@ angular.module('portfolioPage', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.ro
       if (newValue !== undefined) {
         $scope.castLoaded = false;
 
-        tvMaze.getData('http://api.tvmaze.com/search/shows?q=' + newValue)
+        httpGet.getJson(`http://api.tvmaze.com/search/shows?q=${newValue}`)
         .then(function(res) {
           $scope.shows = res.data;
           $scope.showLoaded = true;
@@ -66,7 +66,7 @@ angular.module('portfolioPage', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.ro
     $scope.getCast = function(showName, showlink) {
       $scope.castLoaded = false;
 
-      tvMaze.getData(showlink + '/cast')
+      httpGet.getJson(`${showlink}/cast`)
       .then(function(res) {
         $scope.title = showName;
         $scope.casts = res.data;
@@ -79,14 +79,17 @@ angular.module('portfolioPage', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.ro
 
   })
 
-  .controller('movieCtrl', function($scope, $http, nextflixRoulette, $sce) {
+  .controller('movieCtrl', function($scope, $http, httpGet, $sce) {
+    $scope.option = 'actor';
     $scope.movieLoaded = false;
-    $scope.$watch('query', function(newValue, oldValue) {
-        if (newValue !== undefined) {
 
-        nextflixRoulette.getData('https://netflixroulette.net/api/api.php?actor=' + newValue)
+    $scope.$watch('query', function(newValue, oldValue) {
+      $scope.movieLoaded = false;
+      if (newValue !== undefined) {
+      httpGet.getJson(`https://netflixroulette.net/api/api.php?${$scope.option}=${newValue}`)
         .then(function(res) {
-          $scope.movies = res.data;
+          console.log(res.data);
+          $scope.movies = (res.data.length > 1 ? res.data : [ res.data ]);
           $scope.movieLoaded = true;
 
         }).catch(function(res) {
@@ -95,38 +98,12 @@ angular.module('portfolioPage', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.ro
       }
     })
 
-    $scope.getCast = function(showName, showlink) {
-      $scope.castLoaded = false;
-
-      tvMaze.getData(showlink + '/cast')
-      .then(function(res) {
-        $scope.title = showName;
-        $scope.casts = res.data;
-        $scope.castLoaded = true;
-
-      }).catch(function(res) {
-        console.log('catch', res);
-      });
-    }
-
   })
 
-  .service('tvMaze', function($http) {
+  .service('httpGet', function($http) {
     return {
-      getData: function(link) {
-          return $http.get(link, {
-            headers: {
-              'Accept': 'application/json'
-            }
-          });
-        }
-    };
-  })
-
-  .service('nextflixRoulette', function($http) {
-    return {
-      getData: function(link) {
-          return $http.get(link, {
+      getJson: function(link) {
+          return $http.get(link.replace(/\s/ig, "%20"), {
             headers: {
               'Accept': 'application/json'
             }
