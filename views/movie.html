@@ -1,10 +1,13 @@
 <md-content ng-controller="movieCtrl">
   <div flex layout="column" class="md-padding">
-    <md-input-container flex class="md-icon-float md-title md-accent">
-      <md-icon class="material-icons">search</md-icon>
-      <input placeholder="Search for {{option}}..." ng-model="query">
-    </md-input-container>
-    <md-radio-group ng-model="option" layout="row" layout-align="end center" class="md-accent">
+    <form flex ng-submit="getMovie(query)" layout="row">
+      <md-input-container flex class="md-icon-float md-title md-accent">
+        <md-icon class="material-icons">search</md-icon>
+        <input flex required placeholder="Search for {{option}}..." ng-model="query">
+      </md-input-container>
+    </form>
+
+    <md-radio-group ng-model="option" ng-change="resetQuery()" layout="row" layout-align="end center" class="md-accent">
       <md-radio-button value="actor">Actor</md-radio-button>
       <md-radio-button value="title">Movie Title</md-radio-button>
       <md-radio-button value="director">Director</md-radio-button>
@@ -15,7 +18,7 @@
     <md-card class="md-padding">
       <md-card-header md-colors="::{backgroundColor: 'accent-700'}">
         <md-card-header-text>
-          <span class="md-title">Showing movies for {{query}}.</span>
+          <span class="md-title">Showing movies for {{query | uppercase}}.</span>
         </md-card-header-text>
       </md-card-header>
 

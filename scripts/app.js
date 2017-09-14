@@ -79,24 +79,43 @@ angular.module('portfolioPage', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.ro
 
   })
 
-  .controller('movieCtrl', function($scope, $http, httpGet, $sce) {
+  .controller('movieCtrl', function($scope, $http, httpGet, $sce, $mdShowToast) {
     $scope.option = 'actor';
     $scope.movieLoaded = false;
 
-    $scope.$watch('query', function(newValue, oldValue) {
+    // $scope.$watch('query', function(newValue, oldValue) {
+    //   $scope.movieLoaded = false;
+    //   if (newValue !== undefined) {
+    //   httpGet.getJson(`https://netflixroulette.net/api/api.php?${$scope.option}=${newValue}`)
+    //     .then(function(res) {
+    //       $scope.movies = (res.data.length > 1 ? res.data : [ res.data ]);
+    //       $scope.movieLoaded = true;
+    //
+    //     }).catch(function(res) {
+    //       console.log('catch', res);
+    //       $mdShowToast.show(res.data.message);
+    //     });
+    //   }
+    // })
+    $scope.resetQuery = function() {
+      $scope.query = '';
+      $scope.movieLoaded = false;
+    }
+
+    $scope.getMovie = function(newValue) {
       $scope.movieLoaded = false;
       if (newValue !== undefined) {
       httpGet.getJson(`https://netflixroulette.net/api/api.php?${$scope.option}=${newValue}`)
         .then(function(res) {
-          console.log(res.data);
           $scope.movies = (res.data.length > 1 ? res.data : [ res.data ]);
           $scope.movieLoaded = true;
 
         }).catch(function(res) {
           console.log('catch', res);
+          $mdShowToast.show(res.data.message);
         });
       }
-    })
+    }
 
   })
 
@@ -121,7 +140,7 @@ angular.module('portfolioPage', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.ro
           .action('OK')
           .highlightAction(true)
           .highlightClass('md-accent')
-          .position('top right')
+          .position('top left')
           .hideDelay(6000)
         )
       }
