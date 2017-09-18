@@ -106,25 +106,26 @@ angular.module('vidyKb', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
 	})
 
 	.controller('formCtrl', function($scope, $filter, $mdShowToast) {
-		$scope.issues = [{
-			'type': 'Spelling',
-			'phrases': [{
-				'phrase': 'spelling 1',
-				'issue': 'spelling issue 1'
-			}, {
-				'phrase': 'spelling 2',
-				'issue': 'spelling issue 2'
-			}]
-		}, {
-			'type': 'Timing',
-			'phrases': [{
-				'phrase': 'timing 1',
-				'issue': 'timing issue 1'
-			}, {
-				'phrase': 'timing 2',
-				'issue': 'timing issue 2'
-			}]
-		}]
+		// $scope.issues = [{
+		// 	'type': 'Spelling',
+		// 	'phrases': [{
+		// 		'phrase': 'spelling 1',
+		// 		'issue': 'spelling issue 1'
+		// 	}, {
+		// 		'phrase': 'spelling 2',
+		// 		'issue': 'spelling issue 2'
+		// 	}]
+		// }, {
+		// 	'type': 'Timing',
+		// 	'phrases': [{
+		// 		'phrase': 'timing 1',
+		// 		'issue': 'timing issue 1'
+		// 	}, {
+		// 		'phrase': 'timing 2',
+		// 		'issue': 'timing issue 2'
+		// 	}]
+		// }]
+		$scope.issues = [{}];
 
 		$scope.addPhrase = function(type) {
 			let match = $filter('findValue')($scope.issues, type);
