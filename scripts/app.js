@@ -136,6 +136,8 @@ angular.module('vidyKb', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
 				})
 
 			} else {
+				$scope.issues = [{}];
+
 				$scope.issues.push({
 					'type': type,
 					'phrases': [{
@@ -145,9 +147,9 @@ angular.module('vidyKb', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
 				})
 			}
 
-			$scope.type = '';
-			$scope.phrase = '';
-			$scope.issue = '';
+			$scope.type = undefined;
+			$scope.phrase = undefined;
+			$scope.issue = undefined;
 		};
 
 		$scope.removeLast = function() {
@@ -196,7 +198,7 @@ angular.module('vidyKb', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
 
 	.filter('findValue', function() {
 		return function(input, type) {
-			if (input.length != undefined) {
+			if (input != undefined) {
 				for (let i = 0; i < input.length; i++) {
 					if (input[i].type == type) {
 						return input[i];

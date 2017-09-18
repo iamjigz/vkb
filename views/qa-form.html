@@ -13,11 +13,17 @@
       <md-input-container>
         <label>Phrase</label>
         <input required ng-model="phrase">
+        <a class="clear" ng-click="resetFields()">
+          <span class="glyphicon glyphicon-remove"></span>
+        </a>
       </md-input-container>
 
       <md-input-container class="md-block">
         <label>Issues</label>
         <textarea required ng-model="issue" rows="3" md-select-on-focus></textarea>
+        <a class="clear" ng-click="resetFields()">
+          <span class="glyphicon glyphicon-remove"></span>
+        </a>
       </md-input-container>
 
       <div layout="row" layout-align="end center">
