@@ -12,18 +12,14 @@
 
       <md-input-container>
         <label>Phrase</label>
-        <input required ng-model="phrase">
-        <a class="clear" ng-click="resetFields()">
-          <span class="glyphicon glyphicon-remove"></span>
-        </a>
+        <input required ng-model="phrase" layout="row">
+        <md-icon ng-show="phrase.length > 0" ng-click="phrase = ''" class="material-icons">clear</md-icon>
       </md-input-container>
 
-      <md-input-container class="md-block">
+      <md-input-container class="md-block" layout="row">
         <label>Issues</label>
         <textarea required ng-model="issue" rows="3" md-select-on-focus></textarea>
-        <a class="clear" ng-click="resetFields()">
-          <span class="glyphicon glyphicon-remove"></span>
-        </a>
+        <md-icon ng-show="issue.length > 0" ng-click="issue = ''" class="material-icons">clear</md-icon>
       </md-input-container>
 
       <div layout="row" layout-align="end center">
@@ -36,10 +32,12 @@
     <md-content layout="column" class="md-padding" flex="50">
       <div ng-repeat="issue in issues" layout="column">
         <h3>{{issue.type | uppercase}}</h3>
-        <div ng-repeat="phrase in issue.phrases">
-          <p>{{phrase.phrase}}</p>
-          <pre>{{phrase.issue}}</pre><br />
-        </div>
+        <ul ng-repeat="phrase in issue.phrases">
+          <li>{{phrase.phrase}}</li>
+            <p>
+              <pre>{{phrase.issue}}</pre>
+            </p>
+        </ul>
       </div>
     </md-content>
   </div>

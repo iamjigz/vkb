@@ -106,27 +106,8 @@ angular.module('vidyKb', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
 	})
 
 	.controller('formCtrl', function($scope, $filter, $mdShowToast) {
-		// $scope.issues = [{
-		// 	'type': 'Spelling',
-		// 	'phrases': [{
-		// 		'phrase': 'spelling 1',
-		// 		'issue': 'spelling issue 1'
-		// 	}, {
-		// 		'phrase': 'spelling 2',
-		// 		'issue': 'spelling issue 2'
-		// 	}]
-		// }, {
-		// 	'type': 'Timing',
-		// 	'phrases': [{
-		// 		'phrase': 'timing 1',
-		// 		'issue': 'timing issue 1'
-		// 	}, {
-		// 		'phrase': 'timing 2',
-		// 		'issue': 'timing issue 2'
-		// 	}]
-		// }]
-		$scope.issues = [{}];
 
+		$scope.issues = [{}];
 		$scope.addPhrase = function(type) {
 			let match = $filter('findValue')($scope.issues, type);
 
@@ -136,8 +117,12 @@ angular.module('vidyKb', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
 					'issue': $scope.issue
 				})
 
+				$mdShowToast.show('New phrase added.');
+
 			} else {
-				$scope.issues = [{}];
+				if (!$scope.issues) {
+					$scope.issues = [{}];
+				}
 
 				$scope.issues.push({
 					'type': type,
@@ -146,6 +131,9 @@ angular.module('vidyKb', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
 						'issue': $scope.issue
 					}]
 				})
+
+				$mdShowToast.show('New issue added.');
+
 			}
 
 			$scope.type = undefined;
@@ -155,12 +143,22 @@ angular.module('vidyKb', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
 
 		$scope.removeLast = function() {
 			var lastItem = $scope.issues.length - 1;
-			$scope.issues.splice(lastItem);
+
+			if (lastItem) {
+				$scope.issues.splice(lastItem);
+				$mdShowToast.show('Issue removed.');
+
+			} else {
+				$mdShowToast.show('No more issues to remove.');
+			}
+
 		};
 
 		$scope.clearAll = function() {
 			delete $scope.issues;
+			$mdShowToast.show('All issues cleared.');
 		}
+
 	})
 
 	.service('httpGet', function($http) {
