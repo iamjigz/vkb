@@ -145,8 +145,6 @@ angular.module('vidyKb', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
 				})
 			}
 
-			console.log($scope.issues);
-
 			$scope.type = '';
 			$scope.phrase = '';
 			$scope.issue = '';
@@ -198,10 +196,11 @@ angular.module('vidyKb', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
 
 	.filter('findValue', function() {
 		return function(input, type) {
-
-			for (let i = 0; i < input.length; i++) {
-				if (input[i].type == type) {
-					return input[i];
+			if (input.length != undefined) {
+				for (let i = 0; i < input.length; i++) {
+					if (input[i].type == type) {
+						return input[i];
+					}
 				}
 			}
 
