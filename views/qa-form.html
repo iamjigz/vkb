@@ -1,0 +1,40 @@
+<md-content ng-controller="formCtrl" class="md-padding">
+  <div layout="row" class="md-padding">
+    <md-content layout="column" class="md-padding" flex="50">
+      <md-input-container>
+        <label>Issue Type</label>
+        <md-select ng-model="type" required>
+          <md-option value="Spelling">Spelling</md-option>
+          <md-option value="Timing">Timing</md-option>
+          <md-option value="Phrase">Phrase</md-option>
+        </md-select>
+      </md-input-container>
+
+      <md-input-container>
+        <label>Phrase</label>
+        <input required ng-model="phrase">
+      </md-input-container>
+
+      <md-input-container class="md-block">
+        <label>Issues</label>
+        <textarea required ng-model="issue" rows="3" md-select-on-focus></textarea>
+      </md-input-container>
+
+      <div layout="row" layout-align="end center">
+        <md-button class="md-raised md-primary" ng-click="addPhrase(type)">Add</md-button>
+        <md-button class="md-raised md-primary" ng-click="removeLast()">Undo</md-button>
+        <md-button class="md-raised md-warn" ng-click="clearAll()">Clear All</md-button>
+      </div>
+    </md-content>
+
+    <md-content layout="column" class="md-padding" flex="50">
+      <div ng-repeat="issue in issues" layout="column">
+        <h3>{{issue.type | uppercase}}</h3>
+        <div ng-repeat="phrase in issue.phrases">
+          <p>{{phrase.phrase}}</p>
+          <p>- {{phrase.issue}}</p><br />
+        </div>
+      </div>
+    </md-content>
+  </div>
+</md-content>

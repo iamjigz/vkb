@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="portfolioPage" ng-controller="themeCtrl" md-theme="{{theme}}" md-theme-watch="true">
+<html lang="en" ng-app="vidyKb" ng-controller="themeCtrl" md-theme="{{theme}}" md-theme-watch="true">
 
 <head>
   <meta charset="UTF-8">
@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
   <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.0.0/semantic.min.css">
+  <link href="imgs/favicon.ico" rel="icon" type="image/x-icon" />
   <link rel="stylesheet" href="styles/app.css">
 </head>
 
@@ -29,6 +30,10 @@
 
       <md-tab label="movie">
         <ng-include src="'views/movie.html'"></ng-include>
+      </md-tab>
+
+      <md-tab label="qa form">
+        <ng-include src="'views/qa-form.html'"></ng-include>
       </md-tab>
 
       <!-- <md-tab label="timestamp">
