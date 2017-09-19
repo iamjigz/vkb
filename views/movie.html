@@ -4,6 +4,7 @@
       <md-input-container flex class="md-icon-float md-title md-accent">
         <md-icon class="material-icons">search</md-icon>
         <input flex required placeholder="Search for {{option}}..." ng-model="query">
+        <md-icon ng-show="query.length > 1" ng-click="query = ''" class="material-icons">clear</md-icon>
       </md-input-container>
     </form>
 

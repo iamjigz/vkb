@@ -1,10 +1,6 @@
 angular.module('vidyKb', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
 	.controller('appCtrl', function($scope, $mdDialog) {
-		$scope.debugMode = false;
-
 		$scope.showModal = function(ev, showInfo) {
-			$scope.showData = showInfo;
-
 			function DialogController($scope, $mdDialog) {
 				$scope.hide = function() {
 					$mdDialog.hide();
@@ -42,7 +38,7 @@ angular.module('vidyKb', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
 
 	.controller('tvShowCtrl', function($scope, $http, httpGet, $sce) {
 		$scope.$watch('query', function(newValue, oldValue) {
-			$scope.topShows = topShowsList;
+			$scope.pinnedShows = [{}];
 			$scope.showLoaded = false;
 			$scope.castLoaded = false;
 
@@ -76,6 +72,17 @@ angular.module('vidyKb', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
 				});
 		}
 
+		$scope.pinShow = function(data) {
+			$scope.pinnedShows.push({
+				'name': data.show.name,
+				'image': data.show.image.medium,
+				'url': data.show._links.self.href
+			})
+		}
+
+		$scope.unpinShow = function(url) {
+			$scope.pinnedShows = $scope.pinnedShows.filter(show => show.url !== url)
+		}
 	})
 
 	.controller('movieCtrl', function($scope, $http, httpGet, $sce, $mdShowToast) {
@@ -205,6 +212,20 @@ angular.module('vidyKb', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
 			if (input != undefined) {
 				for (let i = 0; i < input.length; i++) {
 					if (input[i].type == type) {
+						return input[i];
+					}
+				}
+			}
+
+			return null;
+		}
+	})
+
+	.filter('findShow', function() {
+		return function(input, url) {
+			if (input != undefined) {
+				for (let i = 0; i < input.length; i++) {
+					if (input[i].url == url) {
 						return input[i];
 					}
 				}
