@@ -34,9 +34,9 @@
         <h3>{{issue.type | uppercase}}</h3>
         <ul ng-repeat="phrase in issue.phrases">
           <li>{{phrase.phrase}}</li>
-            <p>
-              <pre>{{phrase.issue}}</pre>
-            </p>
+            <pre>
+              <p>{{phrase.issue}}</p>
+            </pre>
         </ul>
       </div>
     </md-content>
