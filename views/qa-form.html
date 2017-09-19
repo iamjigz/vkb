@@ -25,16 +25,16 @@
       <div layout="row" layout-align="end center">
         <md-button class="md-raised md-primary" ng-click="addPhrase(type)">Add</md-button>
         <md-button class="md-raised md-primary" ng-click="removeLast()">Undo</md-button>
-        <md-button class="md-raised md-warn" ng-click="clearAll()">Clear All</md-button>
+        <md-button class="md-raised md-warn btn" ng-click="clearAll()">Clear</md-button>
       </div>
     </md-content>
 
-    <md-content layout="column" class="md-padding" flex="50">
+    <md-content id="copyThis" md-no-ink data-clipboard-target="#copyThis" ng-click="showMsg()" layout="column" class="md-padding" flex="50">
       <div ng-repeat="issue in issues" layout="column">
         <h3>{{issue.type | uppercase}}</h3>
         <ul ng-repeat="phrase in issue.phrases">
           <li>{{phrase.phrase}}</li>
-            <pre>
+          <pre>
               <p>{{phrase.issue}}</p>
             </pre>
         </ul>

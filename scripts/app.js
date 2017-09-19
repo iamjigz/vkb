@@ -105,6 +105,7 @@ angular.module('vidyKb', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
 	})
 
 	.controller('formCtrl', function($scope, $filter, $mdShowToast) {
+		new Clipboard('#copyThis');
 
 		$scope.issues = [{}];
 		$scope.addPhrase = function(type) {
@@ -132,7 +133,6 @@ angular.module('vidyKb', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
 				})
 
 				$mdShowToast.show('New issue added.');
-
 			}
 
 			$scope.type = undefined;
@@ -158,6 +158,12 @@ angular.module('vidyKb', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
 			$mdShowToast.show('All issues cleared.');
 		}
 
+		$scope.showMsg = function() {
+			let count = $scope.issues.length - 1;
+			if (count == undefined | count == 0) return;
+
+			$mdShowToast.show('Text copied. You can now clear the comments.');
+		}
 	})
 
 	.service('httpGet', function($http) {
