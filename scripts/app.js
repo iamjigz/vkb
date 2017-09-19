@@ -1,7 +1,6 @@
 angular.module('vidyKb', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
 	.controller('appCtrl', function($scope, $mdDialog) {
 		$scope.debugMode = false;
-		$scope.transcriptionSheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTx1KoZbuX4SU4iqRv86L7wd56Ns7eBSTUyMFsXm-aicw45ds-sMbtCAJ4kYt5DgecigMpeVFB_haVh";
 
 		$scope.showModal = function(ev, showInfo) {
 			$scope.showData = showInfo;
