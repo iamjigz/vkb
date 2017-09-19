@@ -1,10 +1,10 @@
 <md-content ng-controller="tvShowCtrl" ng-cloak>
   <div flex layout="column" class="md-padding">
     <md-content class="md-padding" layout-xs="column" layout="row" layout-align="center center">
-      <md-card ng-repeat="pinned in pinnedShows" ng-show="pinnedShows.length > 1">
+      <md-card ng-repeat="pinned in pinnedShows">
         <md-tooltip>{{pinned.name}}</md-tooltip>
         <img class="md-card-image" ng-click="getCast(pinned.name, pinned.url)" ng-src="{{pinned.image}}" />
-        <md-card-icon-actions ng-show="pinned.image" layout="row" layout-align="end center">
+        <md-card-icon-actions layout="row" layout-align="end center">
           <md-button class="md-icon-button" aria-label="clear" ng-click="unpinShow(pinned.url)">
             <md-icon class="material-icons">clear</md-icon>
           </md-button>

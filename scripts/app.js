@@ -38,7 +38,7 @@ angular.module('vidyKb', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
 
 	.controller('tvShowCtrl', function($scope, $http, httpGet, $sce) {
 		$scope.$watch('query', function(newValue, oldValue) {
-			$scope.pinnedShows = [{}];
+			$scope.pinnedShows = pinnedShows;
 			$scope.showLoaded = false;
 			$scope.castLoaded = false;
 
@@ -83,6 +83,7 @@ angular.module('vidyKb', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
 		$scope.unpinShow = function(url) {
 			$scope.pinnedShows = $scope.pinnedShows.filter(show => show.url !== url)
 		}
+
 	})
 
 	.controller('movieCtrl', function($scope, $http, httpGet, $sce, $mdShowToast) {
