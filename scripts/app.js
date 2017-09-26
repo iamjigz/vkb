@@ -1,6 +1,20 @@
 angular.module('vidyKb', ['ngMaterial', 'ngResource', 'ngAnimate', 'ui.router'])
-	.controller('appCtrl', function($scope, $mdDialog) {
-		$scope.showModal = function(ev, showInfo) {
+	.controller('appCtrl', function($scope, $mdDialog, $mdShowToast) {
+		$scope.isAuth = false;
+		$scope.fabOpen = false;
+
+		$scope.authenticate = function() {
+			let auth = $scope.auth;
+			if (auth.user != 'iamvidy' && auth.pass != 'iamvidy') {
+				$mdShowToast.show('Incorrect username or password');
+			} else {
+				$mdShowToast.show('You are authenticated');
+				$scope.isAuth = true;
+				$mdDialog.hide();
+			}
+		}
+
+		$scope.showModal = function(ev) {
 			function DialogController($scope, $mdDialog) {
 				$scope.hide = function() {
 					$mdDialog.hide();

@@ -1,37 +1,14 @@
-<md-dialog aria-label="modal">
-  <md-card ng-model="showData" ng-click="getCast(showData.show._links.self.href)">
-    <md-card-header md-colors="::{backgroundColor: 'primary-700'}">
-      <md-card-header-text>
-        <span class="md-title">{{showData}}</span>
-        <span class="md-subhead">{{showData.show.summary}}</span>
-      </md-card-header-text>
-    </md-card-header>
+<md-dialog aria-label="modal" layout="column" layout-padding ng-cloak>
+  <md-content class="md-no-momentum">
+    <md-input-container class="md-icon-float md-block">
+      <md-icon class="material-icons name">account_box</md-icon>
+      <input required ng-model="auth.user" type="text" placeholder="Username">
+    </md-input-container>
 
-    <md-card-title>
-      <md-card-title-media>
-        <img ng-src="{{showData.show.image.medium}}" class="card-media">
-      </md-card-title-media>
-    </md-card-title>
-  </md-card>
+    <md-input-container class="md-icon-float md-block">
+      <md-icon class="material-icons name">input</md-icon>
+      <input required ng-model="auth.pass" type="password" placeholder="Password">
+    </md-input-container>
 
-  <div class='md-padding' layout="row" layout-align="center center" layout-wrap>
-    <md-card ng-repeat="cast in casts">
-      <md-card-header md-colors="::{backgroundColor: 'primary-700'}">
-        <md-card-avatar>
-          <img class="md-user-avatar" src="{{cast.person.image.medium}}" />
-        </md-card-avatar>
-
-        <md-card-header-text>
-          <span class="md-title">{{cast.person.name}}</span>
-          <span class="md-subhead">{{cast.character.name}}</span>
-        </md-card-header-text>
-      </md-card-header>
-
-      <md-card-title>
-        <md-card-title-media>
-          <img ng-src="{{cast.character.image.medium}}" class="card-media">
-        </md-card-title-media>
-      </md-card-title>
-    </md-card>
-  </div>
+    <md-button class="md-raised md-primary" ng-click="authenticate()">Login</md-button>
 </md-dialog>

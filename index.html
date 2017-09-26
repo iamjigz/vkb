@@ -32,15 +32,19 @@
         <ng-include src="'views/movie.html'"></ng-include>
       </md-tab>
 
-      <md-tab label="stats">
+      <md-tab ng-disabled="!isAuth" label="stats">
         <ng-include src="'views/stats.html'"></ng-include>
       </md-tab>
 
-      <md-tab label="qa form">
+      <md-tab ng-disabled="!isAuth" label="sched">
+        <ng-include src="'views/sched.html'"></ng-include>
+      </md-tab>
+
+      <md-tab ng-disabled="!isAuth" label="qa form">
         <ng-include src="'views/qa-form.html'"></ng-include>
       </md-tab>
 
-      <md-tab label="">
+      <md-tab ng-disabled label="">
         <ng-include src="'views/view.html'"></ng-include>
       </md-tab>
 
