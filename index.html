@@ -32,6 +32,10 @@
         <ng-include src="'views/movie.html'"></ng-include>
       </md-tab>
 
+      <md-tab label="timestamp">
+        <ng-include src="'views/timestamp.html'"></ng-include>
+      </md-tab>
+
       <md-tab ng-disabled="!isAuth" label="stats">
         <ng-include src="'views/stats.html'"></ng-include>
       </md-tab>
@@ -67,5 +71,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
 
 <script src="scripts/app.js"></script>
+<script src="scripts/controllers/themeCtrl.js"></script>
+<script src="scripts/controllers/tvShowCtrl.js"></script>
+<script src="scripts/controllers/movieCtrl.js"></script>
+
 <script src="scripts/data.js"></script>
 </html>
