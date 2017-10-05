@@ -1,578 +1,87 @@
-<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-<script>
-  startTime = new Date();
-</script>
-
-<style>
-  #loading {
-    width: 100%;
-    height: 100%;
-    top: 0px;
-    left: 0px;
-    position: fixed;
-    display: block;
-    opacity: 0.7;
-    background-color: #fff;
-    z-index: 99;
-    display: none;
-  }
-
-  #loading-image {
-    //  position: absolute;
-    //  top: 50%;
-    //  left: 50%;
-    //  text-align: center;
-    //  vertical-align:middle;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-
-    z-index: 100;
-  }
-</style>
-<div id="loading">
-  <img id="loading-image" width=200 src="ajax_loader_gray_512.gif" alt="Loading..." />
-</div>
-
-<p align=center>
-
-  <div style="position:fixed; left: 50%; margin-left: -250px; background-color: white; height: 300px; width: 500px;">
-    <div id="backdrop" style="z-index: 1; position: absolute; top: 0px; with: 300px; height: 300px;"><video src="http://storage.googleapis.com/bb-cropped/cropped/qhc-bB_snj4.mp4" width="500px" height="300px" id="myAudio" controls></video></div>
-    <div id="curtain" style="display: none; z-index: 2; position: absolute; top: 0px; background-color:white; height:60px; width:500px;">&nbsp;</div>
-  </div>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-
-
-
-  <form id="correctform">
-    <p align=center>phrase: <input type=text name="phrase" size=50> <button id="submit_correct_button" onclick="javascript:did_tap_submit_correct_button(this); return false;">submit</button> <button id="broken_button" style="background-color:red;" onclick="javascript:did_tap_broken(this);  return false;">broken</button><br>
-  </form>
-  <span id="time" style="display: none;"></span>
-  <form id="updateform" style="display: none;">
-    <p align=center>
-      start: <input type=text name="start" id="start" onclick="didFocus(this);"> end: <input type=text name="end" id="end" onclick="didFocus(this);"> <button onclick="javascript:did_tap_preview_button(); return false;">play</button> <button id="submit_broken_button"
-        onclick="javascript:did_tap_submit_broken_button(this); return false;">submit</button> <button id="cancel_button" onclick="javascript:did_tap_cancel(this);  return false;">cancel</button>
-  </form>
-  </p>
-
-  </form>
-
-  <table align=center>
-    <tr>
-      <td>
-        <p align=center><textarea rows=30 cols=100 style="display:none;"></textarea></p>
-      </td>
-      <td><textarea id="correct_phrases" rows=30 cols=40 style="display:none;"></textarea></td>
-      <td valign=top>
-        <div id="broken_phrases"></div>
-      </td>
-    </tr>
-    <tr>
-      <td></td>
-      <td>
-        <p align=center><button id="submit_modify_button" onclick="javascript:did_tap_modify_button(this); return false;">modify</button></p>
-      </td>
-      <td></td>
-    </tr>
-  </table>
-
-  <script>
-    function didTapPlay(button) {
-      if (aud.paused) {
-        aud.play();
-      } else {
-        aud.pause();
-      }
-    }
-
-    //detect pause button with letter "p"
-    $(document).keypress(function(event) {
-      if (event.which == 13) {
-        event.preventDefault();
-      }
-      //if(event.keyCode==32)
-      if (String.fromCharCode(event.keyCode) == "p") {
-        //alert(String.fromCharCode(event.keyCode));
-        didTapPlay();
-      }
-    });
-
-
-    correct_phrases = "";
-    broken_phrases = [];
-    hashtags_for_phrases = [];
-    artist_for_phrases = [];
-    featured_for_phrases = [];
-    id_for_phrases = [];
-    timeout_value = "";
-
-    //load_phrases();
-
-    $(document).ready(function() {
-      load_phrases();
-
-      //force broken phrases form
-      did_tap_broken();
-
-      var VidyTranscriberCookie = decodeURIComponent(document.cookie.replace(/(?:(?:^|.*;\s*)VidyTranscriber\s*\=\s*([^;]*).*$)|^.*$/, "$1"));
-      if (VidyTranscriberCookie) {
-        var user_data = JSON.parse(VidyTranscriberCookie);
-        $('input[name="name"]').val(user_data["name"]);
-      }
-
-
-      //auto play
-
-
-
-
-    });
-
-    function did_tap_broken() {
-      $('#updateform').show();
-      $('#submit_correct_button').hide();
-      $('#broken_button').hide();
-
-      return false;
-    }
-
-    function did_tap_cancel() {
-      $('#updateform').hide();
-      $('#submit_correct_button').show();
-      $('#broken_button').show();
-
-      return false;
-    }
-
-    function did_tap_submit_correct_button() {
-      // alert("did_tap_submit_correct_button");
-
-      var phrase = $('input[name="phrase"]').val();
-      $('input[name="phrase"]').val("");
-
-      correct_phrases = correct_phrases + phrase + "\n";
-
-      $('#correct_phrases').val(correct_phrases);
-
-      console.log("phrase: " + phrase);
-
-      save_phrases();
-    }
-
-    function did_tap_submit_broken_button() {
-      // alert("did_tap_submit_correct_button");
-
-      var phrase = $('input[name="phrase"]').val();
-      $('input[name="phrase"]').val("");
-
-      var start = $('input[name="start"]').val();
-      $('input[name="start"]').val("");
-
-      var end = $('input[name="end"]').val();
-      $('input[name="end"]').val("");
-
-      broken_phrase = phrase + "," + start + "," + end;
-      broken_phrases.push(broken_phrase);
-      //$('#broken_phrases').val(broken_phrases);
-
-      hashtags_for_phrases.push("");
-      artist_for_phrases.push("");
-      featured_for_phrases.push(0);
-
-      update_broken_phrases_ui();
-
-      did_tap_cancel();
-
-
-      console.log("phrase: " + phrase + " start: " + start + " end: " + end);
-
-      save_phrases();
-
-      did_tap_broken();
-
-    }
-
-    var field = document.getElementById("start");
-
-    var aud = document.getElementById("myAudio");
-
-    aud.currentTime = 0;
-
-    aud.ontimeupdate = function() {
-
-      //console.log("time:"+aud.currentTime);
-
-      var timeLabel = document.getElementById("time");
-      timeLabel.innerHTML = aud.currentTime;
-
-      if (field !== undefined)
-        field.value = aud.currentTime;
-
-
-    };
-    //aud.onpause = function() {videoPaused()};
-    //aud.onplay = function() {videoPlayed()};
-
-    function didFocus(selectedField) {
-
-      field = selectedField;
-    }
-
-    function save_phrases() {
-
-      var data = {
-        "_id": "qhc-bB_snj4",
-        "correct_phrases": correct_phrases.split("\n"),
-        "broken_phrases": broken_phrases,
-        "hashtags_for_phrases": hashtags_for_phrases,
-        "artist_for_phrases": artist_for_phrases
-      };
-
-
-      console.log(JSON.stringify(data));
-
-      $.post("save_draft.php", JSON.stringify(data), function(ajaxresult) {
-        console.log("save: (" + ajaxresult + ")");
-      });
-
-    }
-
-    function mark_as_complete() {
-
-
-      //update screenshot file name
-      document.getElementById('file_name').value = "qhc-bB_snj4-" + Math.floor(Date.now() / 1000);
-      document.getElementById("loading").style.display = "block";
-      window.scrollTo(0, 0);
-      save_screenshot();
-
-      var endTime = new Date();
-      var total_time = (endTime - startTime) / 1000.0;
-
-      var name = $('input[name="name"]').val();
-      var hashtags = $('input[name="hashtags"]').val();
-
-      console.log("name: " + name + " hashtags:" + hashtags);
-
-      if (name == "") {
-        alert("Please enter your name first!");
-        return;
-      }
-      if (hashtags == "") {
-        alert("Please enter hashtags first!");
-        return;
-      }
-
-
-
-      var data = {
-        "_id": "qhc-bB_snj4",
-        "name": name,
-        "hashtags": hashtags,
-        "time": total_time,
-        "admin": false,
-        "screenshot_file_name": document.getElementById('file_name').value
-      };
-      console.log(JSON.stringify(data));
-
-      $.post("mark_as_complete.php", JSON.stringify(data), function(ajaxresult) {
-        console.log("save: (" + ajaxresult + ")");
-
-        //--alert("Done!");
-      });
-
-      document.cookie = "VidyTranscriber=" + JSON.stringify({
-        "name": name
-      }) + ";path=/;domain=vidytranscribe.com";
-
-
-    }
-
-    function load_phrases() {
-
-      $('input[name="hashtags"]').val('#EmiliaClarke #DaeneysTargaryen #gameofthrones #got');
-      var data = {
-        "_id": "qhc-bB_snj4",
-        "url": "https:\/\/www.youtube.com\/watch?v=qhc-bB_snj4",
-        "title": "No title",
-        "transcriptionID": "qhc-bB_snj4",
-        "correct_phrases": ["", "", "", "", "", ""],
-        "broken_phrases": ["there ,18.6,20.062941", "it's a back gate ,20.726163,21.98205", "your men,25.112737,25.989492", "a man cannot make love to property,28.645059,30.500542", "this is where we enter the city ,34.276109,35.626204",
-          "they let me inside ,37.437977,38.689796", "we're not gonna sneak an armies through a back gate ,38.75,41.1", "I take your two best men and lead them through the back streets ,42.19105,45.4", "open the front gates ,47.26,48.319186",
-          "perharps you'll lead ,54.3,55.046617", "you've already slaughtered your partners,63.5,65.420821", "you have a very suspicious mind,65.591027,67.709394", "in my experience only dishonest people think this way,67.901326,71",
-          "you leave tonight,90.7,91.8", "very good ,92,93.363345", "you can use an extra sword,104.6,106.2", "you're the queen's guard ,106.629005,107.7", "your place is by the queen ,108.8,110.2",
-          "your place is by the queen if we are truly her loyal service,108.8,113.287417", "we'll do whatever needs to be done,113.287417,115.106918", "i'm a great whistler ,131.669204,133.554506", "there may be others,175.5,177.297846",
-          "i doubt it,177.337322,178.7", "that's what you call a few guards,226.4,228", "we've been wasting a long time ,251,253.712483", "haven't we,255.872732,257.012664",
-          "oh i don't know you tell me how long does it take ,258.738145,261.509125", "it was just as you said ,270,273.204374", "they're slave soldiers through down their spears ,276.778596,280.141077", "the city is yours my queen ,309.5,312"
-        ],
-        "hashtags_for_phrases": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
-        "artist_for_phrases": ["#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen",
-          "#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen",
-          "#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen",
-          "#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen",
-          "#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen", "#EmiliaClarke #DaenerysTargaryen"
-        ],
-        "featured_for_phrases": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
-      };
-
-      if (data["correct_phrases"] === undefined)
-        data["correct_phrases"] = [];
-
-      correct_phrases = data["correct_phrases"].join("\n");
-      correct_phrases = correct_phrases + "\n";
-
-      if (data["broken_phrases"] === undefined)
-        data["broken_phrases"] = [];
-
-      if (data["hashtags_for_phrases"] === undefined)
-        data["hashtags_for_phrases"] = [];
-
-      if (data["artist_for_phrases"] === undefined)
-        data["artist_for_phrases"] = [];
-
-      if (data["featured_for_phrases"] === undefined)
-        data["featured_for_phrases"] = [];
-
-      broken_phrases = data["broken_phrases"];
-      hashtags_for_phrases = data["hashtags_for_phrases"];
-      artist_for_phrases = data["artist_for_phrases"];
-      featured_for_phrases = data["featured_for_phrases"];
-
-      id_for_phrases = [];
-      id_for_phrases.push('83a1985917e560ac21222323c0df1f6b');
-      id_for_phrases.push('a1dd4193c8eb9c7bf78ae971a3f73a16');
-      id_for_phrases.push('4ea9dc75fb7f2f9d5413cab1ee716bfd');
-      id_for_phrases.push('b64c919f5e4342bb0945b89ab0ec9c91');
-      id_for_phrases.push('00c41ea1ebe1c54a7e7a62245e71082e');
-      id_for_phrases.push('ca902a8835730975cc5d3c271f2f5cc4');
-      id_for_phrases.push('85c83de6621782b64f4f574dd970f7ed');
-      id_for_phrases.push('71b61a24046361ada375e23464a953d1');
-      id_for_phrases.push('2dbe327a763c8f5d2ce5c9a930580a85');
-      id_for_phrases.push('dd2c5ed186d605eb5286d6ca48c709f1');
-      id_for_phrases.push('8ef1754bdb46b9d6b93e5048792a6944');
-      id_for_phrases.push('e4a17505c0a5c6e199666743fe8992b0');
-      id_for_phrases.push('cd23bd2368f0c71955a6ba356edef65b');
-      id_for_phrases.push('19210b7426b4dae060d2baa817747a5a');
-      id_for_phrases.push('9e39a4c6da562eaa55ba9d03184e92e0');
-      id_for_phrases.push('2816ec2ab8af43091d24606489cf8df2');
-      id_for_phrases.push('290709fc4dd040910544e179864f46da');
-      id_for_phrases.push('1c9fb3b642b13975c6c371bb76606f31');
-      id_for_phrases.push('e1f2b2fc14b0672f411c13caaf47d2fc');
-      id_for_phrases.push('0817ae21c8a2651b2075b9d63e639be9');
-      id_for_phrases.push('c0637ab1dca608b84055ab538189f8d0');
-      id_for_phrases.push('473c3e664fce8f56a42aba9ff9c65bc8');
-      id_for_phrases.push('f4da43f89a2cc2ced0c4e9f0c77cfcfa');
-      id_for_phrases.push('70126e92146ed293496045aaeb4b4b75');
-      id_for_phrases.push('1a5cdcc87be6f9739333917091f37244');
-      id_for_phrases.push('786a909e52f6582200d2b4677f0f75e7');
-      id_for_phrases.push('f068fcbc5d68d892761eebe76894d47c');
-      id_for_phrases.push('dc6130d3dce2e0d91d2e0e84efd8284f');
-      id_for_phrases.push('9c4d2a59bf75d232f00615ec4a54f7dd');
-      id_for_phrases.push('2eb2faa2f67238ab3a774f3221242e78');
-      $('#correct_phrases').val(correct_phrases);
-      //$('#broken_phrases').val(broken_phrases);
-      update_broken_phrases_ui();
-    }
-
-    function did_tap_modify_button() {
-      correct_phrases = $('#correct_phrases').val();
-      //broken_phrases=$('#broken_phrases').val();
-
-      //get all broken phrases and load as array
-      var broken_phrases_new = [];
-      var hashtags_for_phrases_new = [];
-      var artist_for_phrases_new = [];
-      var featured_for_phrases_new = [];
-      for (var i = 0; i < broken_phrases.length; i++) {
-        var phrase = $('input[name="phrase' + i + '"]').val();
-        var start = $('input[name="start' + i + '"]').val();
-        var end = $('input[name="end' + i + '"]').val();
-
-        broken_phrase = phrase + "," + start + "," + end;
-        broken_phrases_new.push(broken_phrase);
-
-        var hashtags = $('input[name="hashtags' + i + '"]').val();
-        hashtags_for_phrases_new.push(hashtags);
-
-        var artist = $('input[name="artist' + i + '"]').val();
-        artist_for_phrases_new.push(artist);
-
-        var featured = $('select[name="featured' + i + '"] :selected').val() == "Featured";
-        featured_for_phrases_new.push(featured);
-
-      }
-
-      console.log("new: " + JSON.stringify(broken_phrases_new));
-      console.log("new hashtags: " + JSON.stringify(hashtags_for_phrases_new));
-      console.log("new artist: " + JSON.stringify(artist_for_phrases_new));
-      console.log("new featured: " + JSON.stringify(featured_for_phrases_new));
-
-      broken_phrases = broken_phrases_new;
-      hashtags_for_phrases = hashtags_for_phrases_new;
-      artist_for_phrases = artist_for_phrases_new;
-      featured_for_phrases = featured_for_phrases_new;
-
-      save_phrases();
-    }
-
-
-    function update_broken_phrases_ui() {
-      var html = "";
-      for (var i = 0; i < broken_phrases.length; i++) {
-        console.log(broken_phrases[i]);
-        var broken_phrase_data = broken_phrases[i].split(",");
-        //if(broken_phrase_data[0] !== undefined && broken_phrase_data[1] !== undefined && broken_phrase_data[2] !== undefined)
-        var hashtags = hashtags_for_phrases[i];
-        if (hashtags_for_phrases[i] === undefined)
-          hashtags = "";
-
-        var artist = artist_for_phrases[i];
-        if (artist_for_phrases[i] === undefined)
-          artist = "";
-
-        var featured = featured_for_phrases[i];
-        if (featured_for_phrases[i] === undefined)
-          featured = "";
-
-        var option_not_featured_selected = "";
-        var option_featured_selected = "";
-        if (featured == "" || featured == 0)
-          option_not_featured_selected = " selected";
-        else
-          option_featured_selected = " selected";
-
-        //tmp id to autoplay phrase when specifiied in the url
-        var phraseId = "phraseId_" + i;
-        if (id_for_phrases[i] !== undefined)
-          phraseId = "phraseId_" + id_for_phrases[i];
-
-        html = html + "<input type=text size=50 id=\"" + phraseId + "\" name=phrase" + i + " value=\"" + broken_phrase_data[0] + "\"> <input type=text name=start" + i + " value=\"" + broken_phrase_data[1] +
-          "\" size=4  onclick=\"didFocus(this);\"> <input type=text name=end" + i + " value=\"" + broken_phrase_data[2] + "\" size=4  onclick=\"didFocus(this);\"> <input type=text size=30 name=hashtags" + i + " value=\"" + hashtags +
-          "\" size=20 placeholder=\"hashtags\"> <input type=text size=30 name=artist" + i + " value=\"" + artist + "\" size=20 placeholder=\"artist\">";
-        html = html + " <button id=\"" + phraseId + "_playButton\"onclick=\"javascript:did_tap_play_button(" + i + "); return false;\">play</button> <button onclick=\"javascript:did_tap_delete_button(" + i + "); return false;\">delete</button><br>";
-      }
-      $("#broken_phrases").html(html);
-    }
-
-    function did_tap_play_button(pos) {
-      var start_field_name = "start" + pos;
-      var start = parseFloat($('input[name=' + start_field_name + ']').val());
-
-      var end_field_name = "end" + pos;
-      var end = parseFloat($('input[name=' + end_field_name + ']').val());
-
-      var phrase_field_name = "phrase" + pos;
-      $('input[type=text]').css("background-color", "white");
-      $('input[name=' + phrase_field_name + ']').css("background-color", "yellow");
-
-
-      didFocus();
-      console.log(start + " , " + end);
-
-      aud.currentTime = start;
-      aud.play();
-
-      var duration = end - start;
-
-      console.log("duration: " + duration);
-
-      clearTimeout(timeout_value);
-      timeout_value = setTimeout(function() {
-        aud.pause();
-      }, duration * 1000);
-    }
-
-    function did_tap_delete_button(pos) {
-      broken_phrases.splice(pos, 1);
-      hashtags_for_phrases.splice(pos, 1);
-      artist_for_phrases.splice(pos, 1);
-      featured_for_phrases.splice(pos, 1);
-
-      update_broken_phrases_ui();
-      save_phrases();
-    }
-
-    function did_tap_preview_button() {
-
-      var start = $('input[name="start"]').val();
-
-      var end = $('input[name="end"]').val();
-
-      //remove focus to not update time fields while playing
-      didFocus();
-
-      aud.currentTime = start;
-      aud.play();
-
-      var duration = end - start;
-      console.log("duration: " + duration);
-
-      clearTimeout(timeout_value);
-      timeout_value = setTimeout(function() {
-        aud.pause();
-      }, duration * 1000);
-    }
-  </script>
-
-
-
-
-  <p align=center><input type=text placeholder="Enter your name" name=name> <input type=text placeholder="hashtags" name="hashtags"><br><br><button id="submit_modify_button" onclick="javascript:mark_as_complete(this); return false;">Mark as Complete</button></p>
-
-  <form name="form1"><input type=hidden name=hidden_data id="hidden_data"><input type=hidden name="file_name" id="file_name" value=""></form>
-  <script type="text/javascript" src="/html2canvas.js"></script>
-  <script type="text/javascript">
-    function save_screenshot() {
-
-      html2canvas(document.body).then(function(canvas) {
-        //document.body.appendChild(canvas);
-
-        window.scrollTo(0, document.body.scrollHeight);
-
-
-        //                var dataURL = canvas.toDataURL("image/jpg",0.5);
-        var dataURL = canvas.toDataURL("image/png");
-        document.getElementById('hidden_data').value = dataURL;
-        var fd = new FormData(document.forms["form1"]);
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'upload_screenshot.php', true);
-
-        xhr.upload.onprogress = function(e) {
-          if (e.lengthComputable) {
-            var percentComplete = (e.loaded / e.total) * 100;
-            console.log(percentComplete + '% uploaded');
-            //alert('Succesfully uploaded');
-            if (percentComplete == 100)
-              document.getElementById("loading").style.display = "none";
-
-          }
-        };
-
-        xhr.onload = function() {
-
-        };
-        xhr.send(fd);
-
-
-      });
-
-    }
-  </script>
+<md-content flex ng-controller="timestampCtrl" ng-cloak>
+  <md-card>
+    <video src="http://storage.googleapis.com/bb-cropped/cropped/qhc-bB_snj4.mp4" controls></video>
+    <md-card-title>
+      <md-card-title-text>
+        <!-- <span class="md-headline">Test Link</span> -->
+      </md-card-title-text>
+    </md-card-title>
+
+    <md-card-actions layout layout-align="start center">
+      <div layout="column" flex="80">
+        <md-input-container class="md-icon-float md-accent">
+          <label>Phrase</label>
+          <md-icon class="material-icons">video_label</md-icon>
+          <textarea ng-model="phrase" md-maxlength="200" rows="2" md-select-on-focus></textarea>
+          <md-icon ng-show="phrase.length > 1" ng-click="phrase = ''" class="material-icons">clear</md-icon>
+        </md-input-container>
+
+        <div layout layout-align="start center">
+          <md-input-container class="md-icon-float md-accent">
+            <md-icon class="material-icons">timer</md-icon>
+            <input type="number" step="0.1" placeholder="Start" ng-model="startTime">
+          </md-input-container>
+
+          <md-input-container class="md-icon-float md-accent">
+            <md-icon class="material-icons">timer_off</md-icon>
+            <input type="number" step="0.1" placeholder="End" ng-model="endTime">
+          </md-input-container>
+        </div>
+      </div>
+
+      <md-card-icon-actions layout layout-align="end center">
+        <md-button class="md-icon-button md-primary" aria-label="play">
+          <md-icon class="material-icons">play_arrow</md-icon>
+        </md-button>
+
+        <md-button class="md-icon-button md-primary" aria-label="submit">
+          <md-icon class="material-icons">done</md-icon>
+        </md-button>
+
+        <md-button class="md-icon-button md-accent" aria-label="submit">
+          <md-icon class="material-icons">cancel</md-icon>
+        </md-button>
+      </md-card-icon-actions>
+    </md-card-actions>
+
+    <md-card-content>
+      <table align=center>
+        <tr>
+          <td>
+            <p align=center>
+              <textarea rows=30 cols=100 style="display:none;"></textarea>
+            </p>
+          </td>
+          <td>
+            <textarea id="correct_phrases" rows=30 cols=40 style="display:none;"></textarea>
+          </td>
+          <td valign=top>
+            <div id="broken_phrases"></div>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <p align=center>
+              <md-button class="md-icon-button md-primary">Modify</md-button>
+            </p>
+          </td>
+          <td></td>
+        </tr>
+      </table>
+
+      <md-input-container class="md-icon-float md-accent">
+        <md-icon class="material-icons">account</md-icon>
+        <input placeholder="Enter your name" ng-model="name">
+      </md-input-container>
+
+      <md-input-container class="md-icon-float md-accent">
+        <md-icon class="material-icons">account</md-icon>
+        <input placeholder="Enter hashtags" ng-model="hashtags">
+      </md-input-container>
+      <br>
+      <br>
+      <md-button class="md-icon-button md-primary">Mark as Complete</md-button>
+    </md-card-content>
+  </md-card>
+</md-content>
